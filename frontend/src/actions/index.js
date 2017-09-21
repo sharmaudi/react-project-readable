@@ -34,7 +34,7 @@ export const addCommentAndFetch = (post_id, data) => {
             type: ActionTypes.ADD_COMMENT_AND_FETCH,
             payload: Promise.all([
                 dispatch(addComment(post_id, data)),
-                dispatch(getComments(post_id))
+                dispatch(getPost(post_id))
             ])
 
         })
