@@ -11,10 +11,6 @@ import Comments from "../components/Comments"
 class PostDetail extends Component {
 
 
-    state = {
-        input: ""
-    }
-
     componentWillMount() {
         const postId = this.props.match.params.postId
 
@@ -41,25 +37,11 @@ class PostDetail extends Component {
         }
     }
 
-    static showComments(comments) {
-        return comments.map(comment => (
-            <div key={comment.id} className="well">{comment.body} <span className="badge">{comment.voteScore}</span>
-            </div>
-        ))
-    }
-
-    submitComment(e) {
-        const postId = this.props.match.params.postId
-        e.preventDefault()
-        console.log(this.state.input)
+    submitComment(postId, name, comment) {
         this.props.addCommentAndFetch(postId, {
-            body: this.state.input,
-            author: 'buddy'
+            body: comment,
+            author: name
         })
-        this.setState({
-            input: ''
-        })
-
     }
 
 
@@ -79,7 +61,7 @@ class PostDetail extends Component {
                                 <hr/>
                                 <Comments comments={comments}/>
                                 <hr/>
-                                <CommentForm onSubmit={this.submitComment}/>
+                                <CommentForm postId={selectedPost.id} submitComment={this.submitComment.bind(this)}/>
 
                             </div>
 
