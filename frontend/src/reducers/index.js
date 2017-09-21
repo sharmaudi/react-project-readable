@@ -76,6 +76,10 @@ const posts = (state = initialState, action) => {
         return state
     }
 
+    if (isFullfilled(action, ActionTypes.LIKE_POST)) {
+        return state
+    }
+
     return state
 }
 
