@@ -48,7 +48,7 @@ render()
 }
 
 Comments.propTypes = {
-    comments: PropTypes.object.isRequired
+    comments: PropTypes.array.isRequired
 };
 Comments.defaultProps = {};
 

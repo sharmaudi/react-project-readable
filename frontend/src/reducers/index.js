@@ -64,7 +64,7 @@ const posts = (state = initialState, action) => {
         return {
             ...state,
             posts: {...state.posts, [action.payload.data.id]: action.payload.data},
-            selected_post: action.meta.postId
+            selected_post: action.payload.data.id
         }
     }
 

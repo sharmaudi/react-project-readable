@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import {addCommentAndFetch, getComments, getPost} from "../actions/index"
-import _ from 'lodash'
 import SinglePost from "../components/SinglePost"
 import CommentForm from "../components/CommentForm"
 import Comments from "../components/Comments"
@@ -48,8 +47,9 @@ class PostDetail extends Component {
     render() {
 
         const postId = this.props.match.params.postId
-        const selectedPost = this.props.posts ? this.props.posts[postId] : []
-        const comments = this.props.comments ? _.values(this.props.comments).filter(comment => comment.parentId === postId) : []
+        const selectedPost = this.props.posts ? this.props.posts[postId] : null
+        const all_comments = this.props.comments
+        const comments = selectedPost? selectedPost.comments.map( comment_id => all_comments[comment_id]):[]
         return (
             <div>
                 {selectedPost &&
