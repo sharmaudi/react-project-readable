@@ -16,11 +16,36 @@ class SinglePost extends Component {
 
                     <div className="row">
                         <div className="col-sm-6 col-md-6">
-                            <span className="glyphicon glyphicon-folder-open sm-padding"/>
+                            <span className="glyphicon glyphicon-th xs-padding"/>
                             <Link to={"/category/" + post.category}
+                                  title="Go to category"
+                                  className="sm-padding"
                             >
                                 {post.category}
                             </Link>
+
+                            <span className="glyphicon glyphicon-edit xs-padding"/>
+                            <a href="#edit"
+                               onClick={
+                                   (e) => {
+                                       e.preventDefault()
+                                       this.props.onEditPost(post.id)
+                                   }
+                               }
+                                  className="sm-padding"
+                                  title="Edit Post"
+                            >
+                                edit
+                            </a>
+
+                            <span className="glyphicon glyphicon-remove xs-padding"/>
+                            <a href="#remove"
+                               onClick={(e) => this.props.onDeletePost(post.id)}
+                                  className="sm-padding"
+                                  title="Remove Post"
+                            >
+                                remove
+                            </a>
                         </div>
 
                         <div className="col-sm-6 col-md-6">
@@ -67,7 +92,9 @@ class SinglePost extends Component {
 SinglePost.propTypes = {
     post: PropTypes.object.isRequired,
     onLikePost: PropTypes.func.isRequired,
-    onDislikePost: PropTypes.func.isRequired
+    onDislikePost: PropTypes.func.isRequired,
+    onEditPost:PropTypes.func,
+    onDeletePost:PropTypes.func
 };
 SinglePost.defaultProps = {};
 

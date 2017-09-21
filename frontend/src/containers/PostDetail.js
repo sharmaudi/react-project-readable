@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {addCommentAndFetch, getComments, getPost, likePost} from "../actions/index"
+import {addCommentAndFetch, getComments, getPost, likePost, deletePost} from "../actions/index"
 import SinglePost from "../components/SinglePost"
 import CommentForm from "../components/CommentForm"
 import Comments from "../components/Comments"
@@ -12,14 +12,10 @@ class PostDetail extends Component {
 
     componentWillMount() {
         const postId = this.props.match.params.postId
-
         //get post from server when not already available(e.g. deep linked)
         if (!(this.props.posts && this.props.posts[postId])) {
             this.props.getPost(postId)
         }
-
-        this.props.getComments(postId)
-
     }
 
     componentWillReceiveProps(newProps) {
@@ -51,6 +47,15 @@ class PostDetail extends Component {
         this.props.likePost(postId, true)
     }
 
+    deletePost(postId) {
+        this.props.deletePost(postId)
+        this.props.history.push('/')
+    }
+
+    editPost(postId) {
+        this.props.history.push(`/edit/${postId}`)
+    }
+
 
     render() {
 
@@ -68,6 +73,8 @@ class PostDetail extends Component {
                                 <SinglePost
                                     post={selectedPost}
                                     comments={comments}
+                                    onEditPost={this.editPost.bind(this)}
+                                    onDeletePost={this.deletePost.bind(this)}
                                     onLikePost={this.likePost.bind(this)}
                                     onDislikePost={this.dislikePost.bind(this)}/>
                                 <hr/>
@@ -107,5 +114,5 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPost, getComments, addCommentAndFetch, likePost
+    getPost, getComments, addCommentAndFetch, likePost, deletePost
 })(PostDetail))

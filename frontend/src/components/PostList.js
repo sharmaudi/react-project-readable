@@ -53,7 +53,7 @@ const Post = (props) => {
 
             <div className="row">
                 <div className="col-sm-6 col-md-6">
-                    <span className="glyphicon glyphicon-folder-open"/> &nbsp;
+                    <span className="glyphicon glyphicon-th"/> &nbsp;
                     <Link to={"/category/" + props.post.category}
                               >
                             {props.post.category}

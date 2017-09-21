@@ -21,7 +21,7 @@ class Main extends Component {
             console.log(`Loading posts for category ${category}`)
             this.props.getPostsForCategory(category)
         } else {
-            if (!this.props.blog && !this.connection.pending)
+            if (!this.props.blog && !this.props.connection.pending)
                 this.props.getPosts()
         }
     }

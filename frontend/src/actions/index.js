@@ -152,6 +152,38 @@ export const likePost = (post_id, idDislike=false) => {
     }
 }
 
+export const createPost = (data => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.CREATE_POST,
+            payload: api.Posts.create_post(data)
+        })
+        dispatch(getPosts())
+        dispatch(getCategories())
+    }
+})
+
+export const updatePost = ( (postId, data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.UPDATE_POST,
+            payload: api.Posts.update_post(postId, data)
+        })
+        dispatch(getPosts())
+        dispatch(getCategories())
+    }
+})
+
+export const deletePost = ( (postId) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.DELETE_POST,
+            payload: api.Posts.delete_post(postId)
+        })
+        dispatch(getPosts())
+        dispatch(getCategories())
+    }
+})
 
 export const ActionTypes = {
     GET_POSTS: 'GET_POSTS',
@@ -162,5 +194,8 @@ export const ActionTypes = {
     ADD_COMMENT: 'ADD_COMMENT',
     ADD_COMMENT_AND_FETCH: 'ADD_COMMENT_AND_FETCH',
     LIKE_POST: 'LIKE_POST',
-    INIT: 'INIT'
+    INIT: 'INIT',
+    CREATE_POST: 'CREATE_POST',
+    UPDATE_POST: 'UPDATE_POST',
+    DELETE_POST: 'DELETE_POST'
 }
