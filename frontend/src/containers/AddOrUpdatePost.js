@@ -22,9 +22,12 @@ class AddOrUpdatePost extends Component {
         if (postId) {
             console.log("Updating post", data)
             this.props.updatePost(postId, data)
+            this.props.history.push(`/post/${postId}`)
+
         } else {
             console.log("Creating post", data)
             this.props.createPost(data)
+            this.props.history.push(`/`)
         }
 
     }
