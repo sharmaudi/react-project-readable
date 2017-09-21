@@ -7,11 +7,11 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import Main from "./Main"
 import PostDetail from "./PostDetail"
 import SideBar from "./SideBar"
-import {Route, Redirect} from "react-router-dom"
+import {Route, Redirect, Switch} from "react-router-dom"
 import {init} from "../actions"
 import { withRouter } from 'react-router-dom'
 import {connect} from 'react-redux'
-
+import AddOrUpdatePost from "./AddOrUpdatePost"
 
 
 
@@ -29,11 +29,13 @@ class Root extends Component {
         return (
             <Provider store={store}>
                 <div>
-                    <Header/>
+                    <Header currentRoute={this.props.location.pathname}/>
 
                     <div className="container sm-margin-top">
                         <div className="row">
                             <div className="col-md-8">
+
+                                <Switch>
 
                                 <Route exact path="/" render={
                                     (props) => (
@@ -42,6 +44,9 @@ class Root extends Component {
                                 }/>
                                 <Route exact path="/category/:categoryName" component={Main}/>
                                 <Route exact path="/post/:postId" component={PostDetail}/>
+                                    <Route exact path="/edit/:postId" component={AddOrUpdatePost}/>
+                                <Route exact path="/create" component={AddOrUpdatePost}/>
+                                </Switch>
                             </div>
                             <div className="col-md-4">
                                 <SideBar/>
@@ -64,7 +69,7 @@ Root.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        posts : state.posts,
+        posts : state.blog.posts,
         connection: state.connection
     }
 }
