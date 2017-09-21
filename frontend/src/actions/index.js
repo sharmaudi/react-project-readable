@@ -1,16 +1,9 @@
 import api from "../util/Api"
 
-export const getPosts = () => ({
-    type: ActionTypes.GET_POSTS,
-    payload: api.Posts.get_all_posts()
-})
 
 export const getPostsForCategory = (category) => ({
     type: ActionTypes.GET_POSTS_FOR_CATEGORY,
-    payload: category==="all"?api.Posts.get_all_posts():api.Posts.get_posts(category),
-    meta: {
-        category: category
-    }
+    payload: category
 })
 
 export const getCategories = () => ({
@@ -18,13 +11,6 @@ export const getCategories = () => ({
     payload: api.Posts.get_all_categories()
 })
 
-export const getPost = (id) => ({
-    type: ActionTypes.GET_POST,
-    payload: api.Posts.get_post_by_id(id),
-    meta: {
-        postId: id
-    }
-})
 
 export const getComments = (id) => ({
     type: ActionTypes.GET_COMMENTS,
@@ -55,61 +41,103 @@ export const addCommentAndFetch = (post_id, data) => {
     }
 }
 
+
+const dispatchPending = (dispatch, actionType) => {
+    dispatch({
+        type: actionType + "_PENDING"
+    })
+}
+
+const dispatchFulfilled = (dispatch, actionType, payload, meta) => {
+    dispatch({
+        type: actionType + "_FULFILLED",
+        payload,
+        meta
+    })
+}
+
+const dispatchRejected = (dispatch, actionType, error, meta) => {
+    dispatch({
+        type: actionType + "_REJECTED",
+        error,
+        meta
+    })
+}
+
+
+function handleGetPost(dispatch, post) {
+    return new Promise((resolve, reject) => {
+        post.comments = []
+        dispatchPending(dispatch, ActionTypes.GET_COMMENTS)
+        api.Posts.get_comments(post.id).then(({data: comments}) => {
+            for (const comment of comments) {
+                post.comments.push(comment.id)
+            }
+            dispatchFulfilled(dispatch, ActionTypes.GET_COMMENTS, {data: comments}, {post_id: post.id})
+            resolve(post)
+        }).catch(err => {
+            dispatchRejected(dispatch, ActionTypes.GET_COMMENTS, err, {message: 'GET_COMMENTS_REJECTED'})
+            reject(err)
+        })
+    })
+}
+
+function handleGetPosts(dispatch) {
+    return new Promise((resolve, reject) => {
+        api.Posts.get_all_posts().then(({data: posts}) => {
+            console.log("Dispatching now")
+            const promises = []
+            for (let post of posts) {
+                promises.push(handleGetPost(dispatch, post))
+            }
+
+            Promise.all(promises).then(values => {
+                console.log("All Resolved")
+                console.log(values)
+                resolve(values)
+
+            })
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
+export const getPost = (id) => {
+    return dispatch => {
+        dispatchPending(dispatch, ActionTypes.GET_POST)
+        api.Posts.get_post_by_id(id).then(({data: post}) => {
+            handleGetPost(dispatch, post).then(post => {
+                dispatchFulfilled(dispatch, ActionTypes.GET_POST, {data:post})
+            }).catch(err => dispatchRejected(dispatch, ActionTypes.GET_POST, err))
+        }).catch(err => {
+                dispatchRejected(dispatch, ActionTypes.GET_POST, err)
+            }
+        )
+
+    }
+}
+
+export const getPosts = () => {
+    return dispatch => {
+        dispatchPending(dispatch, ActionTypes.GET_POSTS)
+        handleGetPosts(dispatch).then((posts) => {
+            dispatchFulfilled(dispatch, ActionTypes.GET_POSTS, {data:posts})
+        }).catch(err => {
+            dispatchRejected(dispatch, ActionTypes.GET_POSTS, err)
+        })
+    }
+}
+
+
 export const init = () => {
     console.log("Initializing App")
     return dispatch => {
-
         dispatch({
-            type: 'INIT_PENDING'
+            type:"INIT_PENDING"
         })
-
-        //dispatch non-promise payloads for multiple dependent calls
-        api.Posts.get_all_posts().then(({data: posts}) => {
-            console.log("Dispatching now")
-            dispatch({
-                type: 'GET_POSTS_FULFILLED',
-                payload: {
-                    data: posts
-                }
-            })
-
-
-            for (let post of posts) {
-                api.Posts.get_comments(post.id).then(({data: comments}) => {
-                    dispatch({
-                        type: 'GET_COMMENTS_FULFILLED',
-                        payload: {
-                            data: comments
-                        },
-                        meta: {
-                            post_id: post.id
-                        }
-                    })
-                    dispatch({type: 'INIT_FULFILLED'})
-                }).catch(err => {
-                    dispatch({
-                        type: 'INIT_REJECTED',
-                        payload: err,
-                        meta: {
-                            message: 'GET_COMMENTS_REJECTED'
-                        }
-                    })
-                })
-            }
-        }).catch(err => {
-            dispatch({
-                type: 'INIT_REJECTED',
-                payload: err,
-                meta: {
-                    message: 'GET_COMMENTS_REJECTED'
-                }
-            })
-        })
-
-
-        //this dispatch will be picked up by redux promise
+        dispatch(getPosts())
         dispatch(getCategories())
-
     }
 }
 
