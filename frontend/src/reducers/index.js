@@ -24,6 +24,24 @@ const normalizeCategories = (categories) => {
     }, {})
 }
 
+const normalizeComments = (comments, oldComments) => {
+    console.log(comments)
+    if (!oldComments) {
+        oldComments = {}
+    }
+    let commentsObj = oldComments
+    if (comments.length > 0) {
+        commentsObj = comments.reduce(function (accumulator, value) {
+            accumulator[value.id] = value
+            return accumulator
+        }, oldComments)
+
+    }
+
+    return commentsObj
+
+}
+
 const posts = (state = initialState, action) => {
 
     if (isFullfilled(action, ActionTypes.GET_POSTS)) {
@@ -41,7 +59,19 @@ const posts = (state = initialState, action) => {
 
     if (isFullfilled(action, ActionTypes.GET_POST)) {
 
-        return {...state, posts: {...state.posts, [action.payload.data.id]:action.payload.data}, selected_post: action.meta.postId}
+        return {
+            ...state,
+            posts: {...state.posts, [action.payload.data.id]: action.payload.data},
+            selected_post: action.meta.postId
+        }
+    }
+
+    if (isFullfilled(action, ActionTypes.GET_COMMENTS)) {
+        return {...state, comments: normalizeComments(action.payload.data, state.comments)}
+    }
+
+    if (isFullfilled(action, ActionTypes.ADD_COMMENT)) {
+        return state
     }
 
     return state
@@ -72,7 +102,7 @@ const connectionProps = (state = {
 
 
 const rootReducer = combineReducers({
-    posts,
+    blog:posts,
     connection: connectionProps
 })
 

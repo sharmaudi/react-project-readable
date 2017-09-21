@@ -17,22 +17,22 @@ class CategoryList extends Component {
 
                 console.log(`Selected category is ${selectedCategory}`)
 
-                if(category.name === selectedCategory)  {
+                if (category.name === selectedCategory) {
                     return (
                         <Link to={"/category/" + category.path}
-                             className="list-group-item active"
+                              className="list-group-item active"
                               selected="true"
-                             key={category.name}>
-                    {category.name}
-                </Link>
+                              key={category.name}>
+                            {category.name}
+                        </Link>
                     )
                 } else {
                     return (
                         <Link to={"/category/" + category.path}
-                             className="list-group-item"
-                             key={category.name}>
-                    {category.name}
-                </Link>
+                              className="list-group-item"
+                              key={category.name}>
+                            {category.name}
+                        </Link>
                     )
                 }
 
@@ -47,8 +47,13 @@ class CategoryList extends Component {
 
     render() {
         return (
-            <div className="list-group">
-                {this.renderCategories()}
+            <div className="panel panel-default">
+                <div className="panel-heading">
+                    <h4>Categories</h4>
+                </div>
+                <div className="list-group">
+                    {this.renderCategories()}
+                </div>
             </div>
         );
     }

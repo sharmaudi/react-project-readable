@@ -8,6 +8,7 @@
     "bootstrap-select": "^1.12.4",
     "humps": "^2.0.1",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "normalizr": "^3.2.3",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",

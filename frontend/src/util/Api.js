@@ -11,15 +11,16 @@ const Posts = {
     downvote: (id) => client.post(`/posts/${id}`, {option: 'downVote'}),
     update_post: (id, data) => client.put(`/posts/${id}`, data),
     delete_post: (id) => client.delete(`/posts/${id}`),
-}
-
-const Comments = {
-    add_comment_to_post: (post_id, data) => client.post('/posts', {
+    add_comment_to_post: (post_id, data) => client.post('/comments', {
         ...data,
         parentId: post_id,
         timestamp: Date.now(),
         id: uuid()
     }),
+    get_comments:(post_id) => client.get(`/posts/${post_id}/comments`)
+}
+
+const Comments = {
     get_comment: (id) => client.get(`/comments/${id}`),
     upvote: (id) => client.post(`/comments/${id}`, {option: 'upVote'}),
     downvote: (id) => client.post(`/comments/${id}`, {option: 'downVote'}),

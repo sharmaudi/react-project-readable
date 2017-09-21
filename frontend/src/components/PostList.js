@@ -2,15 +2,24 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import _ from 'lodash'
 import 'bootstrap-select/dist/css/bootstrap-select.css'
+import {formatDate} from "../util/dateutil"
 
-const renderPosts = posts => {
+const renderPosts = (posts,comments) => {
+
+
+
     posts = _.values(posts)
     if (posts && posts.length > 0) {
         return posts.map(post => {
             console.log(post)
-            return (<li key={post.id}>
-                    <Post key={post.id} post={post}/>
-                </li>
+
+            let commentCount = 0
+            if (comments) {
+                commentCount = _.values(comments).filter(comment => comment.parentId === post.id).length
+            }
+
+            return (
+                <Post key={post.id} post={post} commentCount={commentCount}/>
 
             )
         })
@@ -20,32 +29,57 @@ const renderPosts = posts => {
 }
 
 
-const PostList = ({posts, category}) =>
+const PostList = ({posts, category, comments}) =>
     (
-        <div className="container">
-            {category && <h2>{category}</h2>}
-            {!category && <h2>All Posts</h2>}
-            <select className="selectpicker">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
-            </select>
+        <div>
+            {category === "all" && <h1 className="small">LATEST POSTS</h1>}
+            {category && category !== "all" && <h1 className="small">{category.toUpperCase()}</h1>}
+            {renderPosts(posts, comments)}
 
 
-            <ul>
-                {renderPosts(posts)}
-            </ul>
+
         </div>
     );
 
-
 const Post = (props) => {
-    console.log(props.post.id)
+    console.log(props)
     return (
-        <div>
-            <Link to={`/post/` + props.post.id}><strong>{props.post.title}</strong></Link>
+
+
+
+        <article className="xs-margin-top">
+            <h2><Link
+                to={`/post/${props.post.id}`}><strong>{props.post.title}</strong></Link></h2>
+
+            <div className="row">
+                <div className="col-sm-6 col-md-6">
+                    <span className="glyphicon glyphicon-folder-open"/> &nbsp;
+                    <Link to={"/category/" + props.post.category}
+                              >
+                            {props.post.category}
+                        </Link>
+                </div>
+
+                <div className="col-sm-6 col-md-6">
+                    <span className="glyphicon glyphicon-pencil"/> <Link to={`/post/${props.post.id}`}>{props.commentCount}</Link>
+                    &nbsp;&nbsp;<span className="glyphicon glyphicon-time"/> {formatDate(props.post.timestamp)}
+                </div>
+            </div>
+
+            <hr/>
+
             <p>{props.post.body}</p>
-        </div>
+
+
+            <p className="text-right">
+				          <Link
+                to={`/post/${props.post.id}`}>continue reading...</Link>
+            </p>
+
+            <hr/>
+
+
+        </article>
     )
 }
 

@@ -3,7 +3,7 @@ import '../css/App.css';
 import {Link} from 'react-router-dom'
 
 const Header = (props) => (
-        <nav className="navbar navbar-fixed-top navbar-inverse">
+        <nav className="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
       <div className="container">
         <div className="navbar-header">
           <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">

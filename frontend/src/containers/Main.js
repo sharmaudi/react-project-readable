@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {getPosts, getPostsForCategory} from "../actions"
+import {getPosts, getPostsForCategory, init} from "../actions"
 import Spinner from "react-spinkit"
 import { withRouter } from 'react-router-dom'
 import PostList from "../components/PostList"
+
+
 
 class Main extends Component {
 
@@ -16,10 +18,10 @@ class Main extends Component {
 
   refresh(category) {
       if(category) {
-          console.log(`Loading category ${category}`)
+          console.log(`Loading posts for category ${category}`)
           this.props.getPostsForCategory(category)
       } else {
-          console.log('Loading all posts')
+          if(!this.props.blog && !this.connection.pending)
           this.props.getPosts()
       }
   }
@@ -40,14 +42,13 @@ class Main extends Component {
 
 
     render() {
-    const {posts, pending} = this.props.posts
+    const {posts,comments} = this.props.blog
     const {match} = this.props
 
 
     return (
       <div>
-          {pending && this.spin()}
-          <PostList posts={posts} category={match.params.categoryName}/>
+          <PostList posts={posts} category={match.params.categoryName} comments={comments}/>
       </div>
     );
   }
@@ -56,12 +57,12 @@ class Main extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        posts : state.posts,
+        blog : state.blog,
         connection: state.connection
     }
 }
 
 
 export default withRouter(connect(mapStateToProps, {
-  getPosts, getPostsForCategory
+  getPosts, getPostsForCategory, init
 })(Main))
