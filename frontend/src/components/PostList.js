@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import _ from 'lodash'
 import 'bootstrap-select/dist/css/bootstrap-select.css'
 import {formatDate} from "../util/dateutil"
-
+import {truncate} from "../util/textutil"
 const renderPosts = (posts,comments) => {
 
 
@@ -43,6 +43,8 @@ const PostList = ({posts, category, comments}) =>
 
 const Post = (props) => {
     console.log(props)
+    const body = truncate(props.post.body, 50)
+
     return (
 
 
@@ -73,7 +75,7 @@ const Post = (props) => {
 
             <hr/>
 
-            <p>{props.post.body}</p>
+            <p>{body}</p>
 
 
             <p className="text-right">
