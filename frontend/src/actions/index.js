@@ -108,7 +108,7 @@ export const getPost = (id) => {
         dispatchPending(dispatch, ActionTypes.GET_POST)
         api.Posts.get_post_by_id(id).then(({data: post}) => {
             handleGetPost(dispatch, post).then(post => {
-                dispatchFulfilled(dispatch, ActionTypes.GET_POST, {data:post})
+                dispatchFulfilled(dispatch, ActionTypes.GET_POST, {data: post})
             }).catch(err => dispatchRejected(dispatch, ActionTypes.GET_POST, err))
         }).catch(err => {
                 dispatchRejected(dispatch, ActionTypes.GET_POST, err)
@@ -122,7 +122,7 @@ export const getPosts = () => {
     return dispatch => {
         dispatchPending(dispatch, ActionTypes.GET_POSTS)
         handleGetPosts(dispatch).then((posts) => {
-            dispatchFulfilled(dispatch, ActionTypes.GET_POSTS, {data:posts})
+            dispatchFulfilled(dispatch, ActionTypes.GET_POSTS, {data: posts})
         }).catch(err => {
             dispatchRejected(dispatch, ActionTypes.GET_POSTS, err)
         })
@@ -134,10 +134,21 @@ export const init = () => {
     console.log("Initializing App")
     return dispatch => {
         dispatch({
-            type:"INIT_PENDING"
+            type: "INIT_PENDING"
         })
         dispatch(getPosts())
         dispatch(getCategories())
+    }
+}
+
+export const likePost = (post_id, idDislike=false) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.LIKE_POST,
+            payload: idDislike?api.Posts.downvote(post_id):api.Posts.upvote(post_id)
+        })
+        dispatch(getPost(post_id))
+
     }
 }
 
@@ -150,5 +161,6 @@ export const ActionTypes = {
     GET_COMMENTS: 'GET_COMMENTS',
     ADD_COMMENT: 'ADD_COMMENT',
     ADD_COMMENT_AND_FETCH: 'ADD_COMMENT_AND_FETCH',
+    LIKE_POST: 'LIKE_POST',
     INIT: 'INIT'
 }

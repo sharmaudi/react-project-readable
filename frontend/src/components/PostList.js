@@ -58,9 +58,14 @@ const Post = (props) => {
                               >
                             {props.post.category}
                         </Link>
+
+
                 </div>
 
                 <div className="col-sm-6 col-md-6">
+
+                    <span className="glyphicon glyphicon-heart"/> {props.post.voteScore}
+                    &nbsp;&nbsp;
                     <span className="glyphicon glyphicon-pencil"/> <Link to={`/post/${props.post.id}`}>{props.commentCount}</Link>
                     &nbsp;&nbsp;<span className="glyphicon glyphicon-time"/> {formatDate(props.post.timestamp)}
                 </div>

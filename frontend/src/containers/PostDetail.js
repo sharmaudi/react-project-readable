@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {addCommentAndFetch, getComments, getPost} from "../actions/index"
+import {addCommentAndFetch, getComments, getPost, likePost} from "../actions/index"
 import SinglePost from "../components/SinglePost"
 import CommentForm from "../components/CommentForm"
 import Comments from "../components/Comments"
@@ -43,6 +43,14 @@ class PostDetail extends Component {
         })
     }
 
+    likePost(postId) {
+        this.props.likePost(postId)
+    }
+
+    dislikePost(postId) {
+        this.props.likePost(postId, true)
+    }
+
 
     render() {
 
@@ -57,7 +65,11 @@ class PostDetail extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-8">
-                                <SinglePost post={selectedPost} comments={comments}/>
+                                <SinglePost
+                                    post={selectedPost}
+                                    comments={comments}
+                                    onLikePost={this.likePost.bind(this)}
+                                    onDislikePost={this.dislikePost.bind(this)}/>
                                 <hr/>
                                 <Comments comments={comments}/>
                                 <hr/>
@@ -95,5 +107,5 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPost, getComments, addCommentAndFetch
+    getPost, getComments, addCommentAndFetch, likePost
 })(PostDetail))

@@ -68,3 +68,16 @@ footer {
 .social-buttons button {
 	margin-top: 5px;
 }
+
+.font-large {
+    font-size: 20px;
+}
+
+.sm-padding {
+    padding-right:10px;
+}
+
+
+.xs-padding {
+    padding-right:3px;
+}
