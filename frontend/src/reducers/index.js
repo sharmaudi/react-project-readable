@@ -53,8 +53,10 @@ const posts = (state = initialState, action) => {
         return {...state, categories: normalizeCategories(action.payload.data.categories)}
     }
 
-    if (isFullfilled(action, ActionTypes.GET_POSTS_FOR_CATEGORY)) {
-        return {...state, posts: normalizePosts(action.payload.data), selected_category: action.meta.category}
+    if (action.type === ActionTypes.GET_POSTS_FOR_CATEGORY) {
+        console.log("Get post for category")
+        console.log(action)
+        return {...state, selected_category: action.payload}
     }
 
     if (isFullfilled(action, ActionTypes.GET_POST)) {
