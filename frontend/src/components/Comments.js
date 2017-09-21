@@ -37,15 +37,11 @@ render()
 {
     return (
 
-
-
         <div className="well">
             <ul id="comments" className="comments">
                 {this.showComments()}
             </ul>
         </div>
-
-
 
     );
 }
