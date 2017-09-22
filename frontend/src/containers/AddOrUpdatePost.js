@@ -4,6 +4,7 @@ import EditPostForm from "../components/EditPostForm"
 import {createPost, updatePost} from "../actions/index"
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
+import _ from "lodash"
 
 
 class AddOrUpdatePost extends Component {
@@ -43,11 +44,13 @@ class AddOrUpdatePost extends Component {
 
         const oper = this.props.location.pathname.startsWith('/create') ? "create" : "edit"
 
+        const categories = this.props.categories
+
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-md-8">
-                        <EditPostForm onSubmit={this.createOrUpdatePost.bind(this)} post={post} operation={oper}/>
+                        <EditPostForm onSubmit={this.createOrUpdatePost.bind(this)} post={post} operation={oper} categories={categories}/>
                     </div>
                 </div>
             </div>
@@ -62,7 +65,8 @@ AddOrUpdatePost.defaultProps = {};
 const mapStateToProps = (state) => {
     return {
         posts: state.blog.posts,
-        connection: state.connection
+        connection: state.connection,
+        categories: _.values(state.blog.categories)
     }
 }
 
