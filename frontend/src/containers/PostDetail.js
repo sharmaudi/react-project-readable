@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {addCommentAndFetch, getComments, getPost, likePost, deletePost, updateComment, deleteComment} from "../actions/index"
+import {addComment, getComments, getPost, likePost, deletePost, updateComment, deleteComment} from "../actions/index"
 import SinglePost from "../components/SinglePost"
 import CommentForm from "../components/CommentForm"
 import Comments from "../components/Comments"
+
 
 
 class PostDetail extends Component {
@@ -33,7 +34,7 @@ class PostDetail extends Component {
     }
 
     submitComment(postId, name, comment) {
-        this.props.addCommentAndFetch(postId, {
+        this.props.addComment(postId, {
             body: comment,
             author: name
         })
@@ -127,5 +128,5 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPost, getComments, addCommentAndFetch, likePost, deletePost, updateComment, deleteComment
+    getPost, getComments, addComment, likePost, deletePost, updateComment, deleteComment
 })(PostDetail))

@@ -70,6 +70,7 @@ Root.propTypes = {
 const mapStateToProps = (state) => {
     return {
         posts : state.blog.posts,
+        comments: state.blog.comments,
         connection: state.connection
     }
 }

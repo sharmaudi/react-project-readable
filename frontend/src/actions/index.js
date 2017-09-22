@@ -20,27 +20,6 @@ export const getComments = (id) => ({
     }
 })
 
-export const addComment = (post_id, data) => ({
-    type: ActionTypes.ADD_COMMENT,
-    payload: api.Posts.add_comment_to_post(post_id, data),
-    meta: {
-        postId: post_id
-    }
-})
-
-export const addCommentAndFetch = (post_id, data) => {
-    return dispatch => {
-        return dispatch({
-            type: ActionTypes.ADD_COMMENT_AND_FETCH,
-            payload: Promise.all([
-                dispatch(addComment(post_id, data)),
-                dispatch(getPost(post_id))
-            ])
-
-        })
-    }
-}
-
 
 const dispatchPending = (dispatch, actionType) => {
     dispatch({
@@ -141,11 +120,11 @@ export const init = () => {
     }
 }
 
-export const likePost = (post_id, idDislike=false) => {
+export const likePost = (post_id, idDislike = false) => {
     return dispatch => {
         dispatch({
             type: ActionTypes.LIKE_POST,
-            payload: idDislike?api.Posts.downvote(post_id):api.Posts.upvote(post_id)
+            payload: idDislike ? api.Posts.downvote(post_id) : api.Posts.upvote(post_id)
         })
         dispatch(getPost(post_id))
 
@@ -185,6 +164,17 @@ export const deletePost = ( (postId) => {
     }
 })
 
+export const addComment = ( (post_id, comment) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ADD_COMMENT,
+            payload: api.Posts.add_comment_to_post(post_id, comment)
+        })
+        dispatch(getPosts())
+    }
+})
+
+
 export const updateComment = ( (post_id, comment) => {
     return dispatch => {
         dispatch({
@@ -193,19 +183,22 @@ export const updateComment = ( (post_id, comment) => {
         })
 
         //reconcile post and comments
-        dispatch(getPost(post_id))
+        dispatch(getPosts())
     }
 })
 
 export const deleteComment = ( (post_id, comment_id) => {
     return dispatch => {
-        dispatch({
-            type: ActionTypes.DELETE_COMMENT,
-            payload: api.Comments.delete_comment(comment_id)
+        //Delete comment on server than update post
+        api.Comments.delete_comment(comment_id).then(({data:deletedComment}) => {
+            api.Posts.get_post_by_id(post_id).then(({data: post}) => {
+                handleGetPost(dispatch, post).then(post => {
+                    dispatchFulfilled(dispatch, ActionTypes.GET_POST, {data: post})
+                    //Delete Comment from Client State
+                    dispatchFulfilled(dispatch, ActionTypes.DELETE_COMMENT, {data: deletedComment.id})
+                })
+            })
         })
-
-        //reconcile post and comments
-        dispatch(getPost(post_id))
     }
 })
 

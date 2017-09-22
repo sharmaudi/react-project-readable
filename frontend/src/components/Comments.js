@@ -85,6 +85,8 @@ class Comments extends Component {
     showComments() {
         const comments = this.props.comments
 
+        console.log("Comments: ",comments )
+
         if (comments.length > 0) {
 
             return comments.map(comment => (

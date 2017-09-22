@@ -25,6 +25,8 @@ class SideBar extends Component {
     render() {
         const {categories, selectedCategory,posts, comments} = this.props
 
+        console.log("Updating comments", comments)
+
         let passedComments = _.sortBy(_.values(comments), o => o.timestamp).reverse()
         let passedPosts = _.sortBy(_.values(posts), o => o.timestamp).reverse()
 

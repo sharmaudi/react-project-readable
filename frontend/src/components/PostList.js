@@ -4,6 +4,9 @@ import _ from 'lodash'
 import 'bootstrap-select/dist/css/bootstrap-select.css'
 import {formatDate} from "../util/dateutil"
 import {truncate} from "../util/textutil"
+import ReactMarkdown from 'react-markdown';
+
+
 const renderPosts = (posts,comments) => {
 
 
@@ -43,7 +46,7 @@ const PostList = ({posts, category, comments}) =>
 
 const Post = (props) => {
     console.log(props)
-    const body = truncate(props.post.body, 50)
+    const body = truncate(props.post.body, 50, "...")
 
     return (
 
@@ -75,7 +78,7 @@ const Post = (props) => {
 
             <hr/>
 
-            <p>{body}</p>
+            <ReactMarkdown source={body}/>
 
 
             <p className="text-right">

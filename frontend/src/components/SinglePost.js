@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from "prop-types"
 import {Link} from "react-router-dom"
 import {formatDate} from "../util/dateutil"
+import ReactMarkdown from 'react-markdown';
 
 class SinglePost extends Component {
 
@@ -62,7 +63,45 @@ class SinglePost extends Component {
 
                     <br/>
 
-                    <p className="lead">{post.body}</p>
+                    <p className="lead">
+
+                        <ReactMarkdown source={post.body} />
+
+                    </p>
+
+                    <p className="small help-block">
+
+                        {post.voteScore < 0 &&
+                            <span>{post.voteScore * -1} dislikes.</span>
+                        }
+
+                        {post.voteScore === 0 &&
+                            <span>There are no likes on this post yet.</span>
+                        }
+
+                        {post.voteScore === 1 &&
+                            <span>1 person liked this post.</span>
+                        }
+
+                        {post.voteScore > 1 &&
+                            <span>{post.voteScore} people liked this post.</span>
+                        }
+                    </p>
+                    <p className="small help-block">
+                        {post.comments.length > 1 &&
+                        (<span>There are {post.comments.length} comments.</span>)
+                        }
+
+                        {post.comments.length === 1 &&
+                        (<span>There is 1 comment.</span>)
+                        }
+
+                        {post.comments.length === 0 &&
+                        (<span>There are no comments.</span>)
+                        }
+
+
+                    </p>
 
                     <p className="text-right">
                         <a href="#11" title="Like Post" className="sm-padding" onClick={

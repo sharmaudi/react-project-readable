@@ -1,5 +1,6 @@
 import {ActionTypes} from "../actions/index"
 import {combineReducers} from "redux"
+import {omit} from 'lodash'
 
 const initialState = {}
 
@@ -78,6 +79,10 @@ const posts = (state = initialState, action) => {
 
     if (isFullfilled(action, ActionTypes.LIKE_POST)) {
         return state
+    }
+
+    if (isFullfilled(action, ActionTypes.DELETE_COMMENT)) {
+        return {...state, comments: omit(state.comments, action.payload.data)}
     }
 
     return state

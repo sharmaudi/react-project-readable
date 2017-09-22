@@ -97,11 +97,11 @@ class EditPostForm extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="body" className="col-md-2">Body</label>
+                                    <label htmlFor="body" className="col-md-2">Body <small className="help-block">(Supports Markdown)</small></label>
                                     <div className="col-md-10">
                                             <Textarea
                                                 className="form-control"
-                                                rows="10"
+                                                rows="20"
                                                 field="body"
                                                 placeholder="Body"/>
                                     </div>
