@@ -49,7 +49,7 @@ const Post = (props) => {
 
 
 
-        <article className="xs-margin-top">
+        <article className="post xs-margin-top well">
             <h2><Link
                 to={`/post/${props.post.id}`}><strong>{props.post.title}</strong></Link></h2>
 
@@ -83,7 +83,6 @@ const Post = (props) => {
                 to={`/post/${props.post.id}`}>continue reading...</Link>
             </p>
 
-            <hr/>
 
 
         </article>

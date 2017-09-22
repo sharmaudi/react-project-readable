@@ -25,7 +25,7 @@ const Comments = {
     upvote: (id) => client.post(`/comments/${id}`, {option: 'upVote'}),
     downvote: (id) => client.post(`/comments/${id}`, {option: 'downVote'}),
     update_comment: (id, data) => client.put(`/comments/${id}`, data),
-    delete_comment: (id) => client.delete(`/comment/${id}`),
+    delete_comment: (id) => client.delete(`/comments/${id}`),
 }
 
 

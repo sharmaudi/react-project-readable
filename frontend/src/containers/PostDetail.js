@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {addCommentAndFetch, getComments, getPost, likePost, deletePost} from "../actions/index"
+import {addCommentAndFetch, getComments, getPost, likePost, deletePost, updateComment, deleteComment} from "../actions/index"
 import SinglePost from "../components/SinglePost"
 import CommentForm from "../components/CommentForm"
 import Comments from "../components/Comments"
@@ -48,12 +48,23 @@ class PostDetail extends Component {
     }
 
     deletePost(postId) {
+
         this.props.deletePost(postId)
         this.props.history.push('/')
     }
 
     editPost(postId) {
         this.props.history.push(`/edit/${postId}`)
+    }
+
+    updateComment(comment) {
+        const postId = this.props.match.params.postId
+        this.props.updateComment(postId, comment)
+    }
+
+    deleteComment(commentId) {
+        const postId = this.props.match.params.postId
+        this.props.deleteComment(postId, commentId)
     }
 
 
@@ -78,7 +89,9 @@ class PostDetail extends Component {
                                     onLikePost={this.likePost.bind(this)}
                                     onDislikePost={this.dislikePost.bind(this)}/>
                                 <hr/>
-                                <Comments comments={comments}/>
+                                <Comments comments={comments}
+                                          onDeleteComment={this.deleteComment.bind(this)}
+                                          onUpdateComment={this.updateComment.bind(this)}/>
                                 <hr/>
                                 <CommentForm postId={selectedPost.id} submitComment={this.submitComment.bind(this)}/>
 
@@ -114,5 +127,5 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPost, getComments, addCommentAndFetch, likePost, deletePost
+    getPost, getComments, addCommentAndFetch, likePost, deletePost, updateComment, deleteComment
 })(PostDetail))

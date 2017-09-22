@@ -8,9 +8,11 @@ class CommentForm extends Component {
         onSubmit: (values) => {
             console.log("Success!", values)
             this.props.submitComment(this.props.postId, values.name, values.comment)
+            values.name=""
+            values.comment=""
         },
 
-        defaultValues: {name: 'anonymous'},
+        defaultValues: {name: ''},
 
         validate: values => {
             const {name, comment} = values

@@ -185,6 +185,30 @@ export const deletePost = ( (postId) => {
     }
 })
 
+export const updateComment = ( (post_id, comment) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.EDIT_COMMENT,
+            payload: api.Comments.update_comment(comment.id, comment)
+        })
+
+        //reconcile post and comments
+        dispatch(getPost(post_id))
+    }
+})
+
+export const deleteComment = ( (post_id, comment_id) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.DELETE_COMMENT,
+            payload: api.Comments.delete_comment(comment_id)
+        })
+
+        //reconcile post and comments
+        dispatch(getPost(post_id))
+    }
+})
+
 export const ActionTypes = {
     GET_POSTS: 'GET_POSTS',
     GET_CATEGORIES: 'GET_CATEGORIES',
@@ -197,5 +221,7 @@ export const ActionTypes = {
     INIT: 'INIT',
     CREATE_POST: 'CREATE_POST',
     UPDATE_POST: 'UPDATE_POST',
-    DELETE_POST: 'DELETE_POST'
+    DELETE_POST: 'DELETE_POST',
+    EDIT_COMMENT: 'EDIT_COMMENT',
+    DELETE_COMMENT: 'DELETE_COMMENT'
 }
