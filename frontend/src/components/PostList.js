@@ -1,98 +1,102 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, {Component} from 'react'
 import _ from 'lodash'
 import 'bootstrap-select/dist/css/bootstrap-select.css'
-import {formatDate} from "../util/dateutil"
-import {truncate} from "../util/textutil"
-import ReactMarkdown from 'react-markdown';
+import 'react-select/dist/react-select.css'
+import PostSnippet from "./PostSnippet"
+import PropTypes from "prop-types"
+
+class PostList extends Component {
+
+    renderPosts(posts, comments) {
+        const {sortBy, sortDirection} = this.props
+        posts = _.sortBy(_.values(posts),[sortBy])
+
+        if (sortDirection === "desc") {
+            posts = posts.reverse()
+        }
+
+        if (posts && posts.length > 0) {
+            return posts.map(post => {
+                console.log(post)
+
+                let commentCount = 0
+                if (comments) {
+                    commentCount = _.values(comments).filter(comment => comment.parentId === post.id).length
+                }
+
+                return (
+                    <PostSnippet key={post.id} post={post} commentCount={commentCount}/>
+
+                )
+            })
+        } else {
+            return (<li key="1">No Posts yet.</li>)
+        }
+    }
+
+    changeSortBy(e) {
+        const val = e.target.value
+        this.props.onSortChange(val, this.props.sortDirection)
+    }
+
+    changeSortDirection(e) {
+        const val = e.target.value
+        this.props.onSortChange(this.props.sortBy, val)
+    }
+
+    render() {
+
+        const {comments, posts, category, sortBy, sortDirection} = this.props
 
 
-const renderPosts = (posts,comments) => {
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-md-5">
+                        {category === "all" && <span className="strong">LATEST POSTS</span>}
+                        {category && category !== "all" && <span className="strong">{category.toUpperCase()}</span>}
+                    </div>
+
+                    <div className="col-md-2"/>
+                    <div className="col-md-5 text-right">
+
+                        <form className="form-inline">
+                            <span htmlFor="sel1" className="xs-padding strong">SORT BY </span>
+
+                            <select value={sortBy} onChange={this.changeSortBy.bind(this)} className="form-control" id="sel1">
+                                <option value="voteScore"
+                                >Votes</option>
+                                <option
+                                    value="timestamp"
+                                >Date</option>
+                            </select>
+
+                            <select value={sortDirection} onChange={this.changeSortDirection.bind(this)} className="form-control" id="sel1">
+                                <option value="desc">DESC</option>
+                                <option value="asc">ASC</option>
+                            </select>
+
+                        </form>
 
 
-
-    posts = _.values(posts)
-    if (posts && posts.length > 0) {
-        return posts.map(post => {
-            console.log(post)
-
-            let commentCount = 0
-            if (comments) {
-                commentCount = _.values(comments).filter(comment => comment.parentId === post.id).length
-            }
-
-            return (
-                <Post key={post.id} post={post} commentCount={commentCount}/>
-
-            )
-        })
-    } else {
-        return (<li key="1">No Posts yet.</li>)
+                    </div>
+                </div>
+                {this.renderPosts(posts, comments)}
+            </div>
+        );
     }
 }
 
-
-const PostList = ({posts, category, comments}) =>
-    (
-        <div>
-            {category === "all" && <h1 className="small">LATEST POSTS</h1>}
-            {category && category !== "all" && <h1 className="small">{category.toUpperCase()}</h1>}
-            {renderPosts(posts, comments)}
-
-
-
-        </div>
-    );
-
-const Post = (props) => {
-    console.log(props)
-    const body = truncate(props.post.body, 50, "...")
-
-    return (
-
-
-
-        <article className="post xs-margin-top well">
-            <h2><Link
-                to={`/post/${props.post.id}`}><strong>{props.post.title}</strong></Link></h2>
-
-            <div className="row">
-                <div className="col-sm-6 col-md-6">
-                    <span className="glyphicon glyphicon-th"/> &nbsp;
-                    <Link to={"/category/" + props.post.category}
-                              >
-                            {props.post.category}
-                        </Link>
-
-
-                </div>
-
-                <div className="col-sm-6 col-md-6">
-
-                    <span className="glyphicon glyphicon-heart"/> {props.post.voteScore}
-                    &nbsp;&nbsp;
-                    <span className="glyphicon glyphicon-pencil"/> <Link to={`/post/${props.post.id}`}>{props.commentCount}</Link>
-                    &nbsp;&nbsp;<span className="glyphicon glyphicon-time"/> {formatDate(props.post.timestamp)}
-                </div>
-            </div>
-
-            <hr/>
-
-            <ReactMarkdown source={body}/>
-
-
-            <p className="text-right">
-				          <Link
-                to={`/post/${props.post.id}`}>continue reading...</Link>
-            </p>
-
-
-
-        </article>
-    )
-}
-
-PostList.propTypes = {};
+PostList.propTypes = {
+    comments: PropTypes.object.isRequired,
+    posts: PropTypes.object.isRequired,
+    category: PropTypes.string.isRequired,
+    sortBy: PropTypes.string,
+    sortDirection: PropTypes.string,
+    sortKeys: PropTypes.array,
+    onSortChange: PropTypes.func
+};
 PostList.defaultProps = {};
 
 export default PostList;
+

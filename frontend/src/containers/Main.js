@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import {getPosts, getPostsForCategory, init} from "../actions"
+import {getPosts, getPostsForCategory, init, changeSortParams} from "../actions"
 import Spinner from "react-spinkit"
 import {withRouter} from 'react-router-dom'
 import PostList from "../components/PostList"
@@ -40,16 +40,29 @@ class Main extends Component {
         }
     }
 
+    changeSortMethod(sortBy, sortDirection) {
+        this.props.changeSortParams("post", sortBy, sortDirection)
+
+    }
+
 
     render() {
         const {posts, comments} = this.props.blog
         const {categoryName} = this.props.match.params
+        const {post_sort_by, post_sort_direction, sort_by_keys} = this.props.ui
 
         const postsInCategory = categoryName === "all" ? posts : _.values(posts).filter(post => post.category === categoryName)
 
         return (
             <div>
-                <PostList posts={postsInCategory} category={categoryName} comments={comments}/>
+                <PostList posts={postsInCategory}
+                          category={categoryName}
+                          comments={comments}
+                          sortBy={post_sort_by}
+                          sortDirection={post_sort_direction}
+                          sortKeys={sort_by_keys}
+                          onSortChange={this.changeSortMethod.bind(this)}
+                />
             </div>
         );
     }
@@ -59,11 +72,12 @@ class Main extends Component {
 const mapStateToProps = (state) => {
     return {
         blog: state.blog,
-        connection: state.connection
+        connection: state.connection,
+        ui:state.ui
     }
 }
 
 
 export default withRouter(connect(mapStateToProps, {
-    getPosts, getPostsForCategory, init
+    getPosts, getPostsForCategory, init, changeSortParams
 })(Main))

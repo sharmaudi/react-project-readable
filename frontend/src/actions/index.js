@@ -190,7 +190,7 @@ export const updateComment = ( (post_id, comment) => {
 export const deleteComment = ( (post_id, comment_id) => {
     return dispatch => {
         //Delete comment on server than update post
-        api.Comments.delete_comment(comment_id).then(({data:deletedComment}) => {
+        api.Comments.delete_comment(comment_id).then(({data: deletedComment}) => {
             api.Posts.get_post_by_id(post_id).then(({data: post}) => {
                 handleGetPost(dispatch, post).then(post => {
                     dispatchFulfilled(dispatch, ActionTypes.GET_POST, {data: post})
@@ -201,6 +201,15 @@ export const deleteComment = ( (post_id, comment_id) => {
         })
     }
 })
+
+export const changeSortParams = (entity, sortBy, sortDirection) => {
+    return {
+        type: ActionTypes.CHANGE_SORT_PARAMS,
+        payload: {
+            entity, sortBy, sortDirection
+        }
+    }
+}
 
 export const ActionTypes = {
     GET_POSTS: 'GET_POSTS',
@@ -216,5 +225,6 @@ export const ActionTypes = {
     UPDATE_POST: 'UPDATE_POST',
     DELETE_POST: 'DELETE_POST',
     EDIT_COMMENT: 'EDIT_COMMENT',
-    DELETE_COMMENT: 'DELETE_COMMENT'
+    DELETE_COMMENT: 'DELETE_COMMENT',
+    CHANGE_SORT_PARAMS: 'CHANGE_SORT_PARAMS'
 }

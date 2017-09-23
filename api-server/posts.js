@@ -22,6 +22,37 @@ const defaultData = {
     category: 'redux',
     voteScore: -5,
     deleted: false
+  },
+    "6nddi6ok3ym7mf1p33lndasfez": {
+    id: '6nddi6ok3ym7mf1p33lndasfez',
+    timestamp: 1468479767190,
+    title: 'Readable Rubric',
+    body: '## Default (Root)\n' +
+    '- should list all available categories, which should link to a category view for that category\n' +
+    '- should list all of the posts ordered by voteScore (highest score first)\n' +
+    '- should have a control for changing the sort method for the list, including at minimum, -\n' +
+    '- order by voteScore and order by timestamp\n' +
+    '- should have a control for adding a new post\n' +
+    '\n' +
+    '## Category View\n' +
+    '- identical to the default view, but filtered to only include posts with the selected category\n' +
+    '\n' +
+    '## Post Detail View\n' +
+    '- should show the details of a post, including: Title, Body, Author, timestamp (in user -\n' +
+    '- readable format), and vote score\n' +
+    '- should list all of the comments for that post, ordered by voteScore (highest first)\n' +
+    '- should have controls to edit or delete the post\n' +
+    '- should have a control to add a new comment.\n' +
+    '- implement comment form however you want (inline, modal, etc.)\n' +
+    '- comments should also have controls for editing or deleting\n' +
+    '\n' +
+    '## Create/Edit View\n' +
+    '- should have a form to create new post or edit existing posts\n' +
+    '- when editing, existing data should be populated in the form',
+    author: 'usharma',
+    category: 'udacity',
+    voteScore: 0,
+    deleted: false
   }
 }
 
