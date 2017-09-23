@@ -159,7 +159,7 @@ class Comments extends Component {
                             <a href="#remove"
                                onClick={(e) => {
                                    e.preventDefault()
-                                   this.props.onLikeComment(comment.id)
+                                   this.props.onDislikeComment(comment.id)
                                }
 
                                }
