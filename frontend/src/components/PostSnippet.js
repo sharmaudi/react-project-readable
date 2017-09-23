@@ -26,6 +26,9 @@ class PostSnippet extends Component {
                         {props.post.category}
                     </Link>
 
+                    &nbsp;&nbsp;&nbsp;
+                    <span className="glyphicon glyphicon-user"/> &nbsp;
+                        {props.post.author}
 
                 </div>
 

@@ -13,7 +13,7 @@ class SinglePost extends Component {
             <div>
                 <article>
                     <h1><Link
-                        to={`/post/${post.id}`}>{post.title}</Link></h1>
+                        to={`/post/${post.id}`}>{post.title}</Link><small className="lead"> by {post.author}</small></h1>
 
                     <div className="row">
                         <div className="col-sm-6 col-md-6">
@@ -63,11 +63,11 @@ class SinglePost extends Component {
 
                     <br/>
 
-                    <p className="lead">
+
 
                         <ReactMarkdown source={post.body} />
 
-                    </p>
+
 
                     <p className="small help-block">
 
