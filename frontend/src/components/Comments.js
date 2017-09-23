@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types"
 import {formatDate} from "../util/dateutil"
 import Modal from 'react-modal'
-
+import {sort} from "../util/textutil"
 const customStyles = {
     content: {
         top: '50%',
@@ -83,9 +83,11 @@ class Comments extends Component {
     }
 
     showComments() {
-        const comments = this.props.comments
+        const origComments = this.props.comments
+        const {sortBy, sortDirection} = this.props
+        const comments = sort(origComments, sortBy, sortDirection)
 
-        console.log("Comments: ",comments )
+        console.log("Sorted Comments: ",comments )
 
         if (comments.length > 0) {
 
@@ -144,10 +146,56 @@ class Comments extends Component {
 
     }
 
+    changeSortBy(e) {
+        const val = e.target.value
+        this.props.onSortChange(val, this.props.sortDirection)
+    }
+
+    changeSortDirection(e) {
+        const val = e.target.value
+        this.props.onSortChange(this.props.sortBy, val)
+    }
+
     render() {
+        const {sortBy, sortDirection} = this.props
         return (
 
             <div className="well">
+
+                <div className="row">
+                    <div className="col-md-5">
+                        <strong>COMMENTS</strong>
+                    </div>
+
+                    <div className="col-md-2"/>
+                    <div className="col-md-5 text-right">
+
+                        <form className="form-inline">
+                            <span htmlFor="sel1" className="xs-padding strong">SORT BY </span>
+
+                            <select value={sortBy} onChange={this.changeSortBy.bind(this)} className="form-control" id="sel1">
+                                <option value="voteScore"
+                                >Votes</option>
+                                <option
+                                    value="timestamp"
+                                >Date</option>
+                            </select>
+
+                            <select value={sortDirection} onChange={this.changeSortDirection.bind(this)} className="form-control" id="sel1">
+                                <option value="desc">DESC</option>
+                                <option value="asc">ASC</option>
+                            </select>
+
+                        </form>
+
+
+                    </div>
+                </div>
+
+
+
+
+                <hr/>
                 <ul id="comments" className="comments">
                     {this.showComments()}
                 </ul>
@@ -207,7 +255,11 @@ class Comments extends Component {
 Comments.propTypes = {
     comments: PropTypes.array.isRequired,
     onDeleteComment:PropTypes.func.isRequired,
-    onUpdateComment:PropTypes.func.isRequired
+    onUpdateComment:PropTypes.func.isRequired,
+    sortBy: PropTypes.string,
+    sortDirection: PropTypes.string,
+    sortKeys: PropTypes.array,
+    onSortChange: PropTypes.func
 };
 Comments.defaultProps = {};
 

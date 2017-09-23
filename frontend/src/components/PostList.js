@@ -4,16 +4,14 @@ import 'bootstrap-select/dist/css/bootstrap-select.css'
 import 'react-select/dist/react-select.css'
 import PostSnippet from "./PostSnippet"
 import PropTypes from "prop-types"
+import {sort} from "../util/textutil"
 
 class PostList extends Component {
 
-    renderPosts(posts, comments) {
+    renderPosts(origPosts, comments) {
         const {sortBy, sortDirection} = this.props
-        posts = _.sortBy(_.values(posts),[sortBy])
 
-        if (sortDirection === "desc") {
-            posts = posts.reverse()
-        }
+        const posts = sort(_.values(origPosts), sortBy, sortDirection)
 
         if (posts && posts.length > 0) {
             return posts.map(post => {
@@ -88,8 +86,8 @@ class PostList extends Component {
 }
 
 PostList.propTypes = {
-    comments: PropTypes.object.isRequired,
-    posts: PropTypes.object.isRequired,
+    comments: PropTypes.object,
+    posts: PropTypes.object,
     category: PropTypes.string.isRequired,
     sortBy: PropTypes.string,
     sortDirection: PropTypes.string,

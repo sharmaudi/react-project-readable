@@ -60,7 +60,7 @@ class PostSnippet extends Component {
 
 PostSnippet.propTypes = {
     post: PropTypes.object.isRequired,
-    commentCount: PropTypes.string.isRequired
+    commentCount: PropTypes.number.isRequired
 };
 PostSnippet.defaultProps = {};
 

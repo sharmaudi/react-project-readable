@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {addComment, getComments, getPost, likePost, deletePost, updateComment, deleteComment} from "../actions/index"
+import {addComment, getComments, getPost, likePost, deletePost, updateComment, deleteComment, changeSortParams} from "../actions/index"
 import SinglePost from "../components/SinglePost"
 import CommentForm from "../components/CommentForm"
 import Comments from "../components/Comments"
@@ -31,6 +31,11 @@ class PostDetail extends Component {
                 }
             }
         }
+    }
+
+    changeSortMethod(sortBy, sortDirection) {
+        this.props.changeSortParams("comment", sortBy, sortDirection)
+
     }
 
     submitComment(postId, name, comment) {
@@ -75,6 +80,7 @@ class PostDetail extends Component {
         const selectedPost = this.props.posts ? this.props.posts[postId] : null
         const all_comments = this.props.comments
         const comments = selectedPost? selectedPost.comments.map( comment_id => all_comments[comment_id]):[]
+        const {comment_sort_by, comment_sort_direction, sort_by_keys} = this.props.ui
         return (
             <div>
                 {selectedPost &&
@@ -92,7 +98,11 @@ class PostDetail extends Component {
                                 <hr/>
                                 <Comments comments={comments}
                                           onDeleteComment={this.deleteComment.bind(this)}
-                                          onUpdateComment={this.updateComment.bind(this)}/>
+                                          onUpdateComment={this.updateComment.bind(this)}
+                                          sortBy={comment_sort_by}
+                                          sortDirection={comment_sort_direction}
+                                          onSortChange={this.changeSortMethod.bind(this)}
+                                />
                                 <hr/>
                                 <CommentForm postId={selectedPost.id} submitComment={this.submitComment.bind(this)}/>
 
@@ -123,10 +133,11 @@ const mapStateToProps = (state, ownProps) => {
     return {
         posts: state.blog.posts,
         comments: state.blog.comments,
-        connection: state.connection
+        connection: state.connection,
+        ui:state.ui
     }
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPost, getComments, addComment, likePost, deletePost, updateComment, deleteComment
+    getPost, getComments, addComment, likePost, deletePost, updateComment, deleteComment, changeSortParams
 })(PostDetail))
