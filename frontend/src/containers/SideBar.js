@@ -45,7 +45,7 @@ class SideBar extends Component {
                 <LatestPostsPanel posts={passedPosts}/>
                 <RecentCommentsPanel comments={passedComments}/>
             </div>
-        );
+        )
     }
 }
 

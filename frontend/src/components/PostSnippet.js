@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import {formatDate} from "../util/dateutil"
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown'
 import {truncate} from "../util/textutil"
 
 
@@ -54,14 +54,14 @@ class PostSnippet extends Component {
 
 
         </article>
-        );
+        )
     }
 }
 
 PostSnippet.propTypes = {
     post: PropTypes.object.isRequired,
     commentCount: PropTypes.number.isRequired
-};
-PostSnippet.defaultProps = {};
+}
+PostSnippet.defaultProps = {}
 
-export default PostSnippet;
+export default PostSnippet

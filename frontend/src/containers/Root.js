@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {Provider} from 'react-redux'
 import Header from "../components/Header"
-import '../css/App.css';
+import '../css/App.css'
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import Main from "./Main"
 import PostDetail from "./PostDetail"

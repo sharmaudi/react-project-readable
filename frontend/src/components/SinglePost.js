@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from "prop-types"
 import {Link} from "react-router-dom"
 import {formatDate} from "../util/dateutil"
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown'
 
 class SinglePost extends Component {
 

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getPosts, getPostsForCategory, init, changeSortParams} from "../actions"
 import Spinner from "react-spinkit"

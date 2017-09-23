@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {Form, Text, Textarea} from 'react-form'
 
 

@@ -1,4 +1,4 @@
-import client from './http_client'
+import client from './httpClient'
 import uuid from 'uuid'
 
 const Posts = {

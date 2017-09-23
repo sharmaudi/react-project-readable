@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import PropTypes from "prop-types"
 import {formatDate} from "../util/dateutil"
 import Modal from 'react-modal'
@@ -186,16 +186,6 @@ class Comments extends Component {
         }
 
 
-    }
-
-    changeSortBy(e) {
-        const val = e.target.value
-        this.props.onSortChange(val, this.props.sortDirection)
-    }
-
-    changeSortDirection(e) {
-        const val = e.target.value
-        this.props.onSortChange(this.props.sortBy, val)
     }
 
     render() {

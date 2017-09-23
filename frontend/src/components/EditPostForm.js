@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {Form, Text, Textarea, Select} from 'react-form'
 import PropTypes from "prop-types"
 

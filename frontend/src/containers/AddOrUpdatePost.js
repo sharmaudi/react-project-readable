@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import EditPostForm from "../components/EditPostForm"
 
 import {createPost, updatePost} from "../actions/index"

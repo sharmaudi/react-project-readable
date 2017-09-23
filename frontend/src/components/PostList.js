@@ -34,16 +34,6 @@ class PostList extends Component {
         }
     }
 
-    changeSortBy(e) {
-        const val = e.target.value
-        this.props.onSortChange(val, this.props.sortDirection)
-    }
-
-    changeSortDirection(e) {
-        const val = e.target.value
-        this.props.onSortChange(this.props.sortBy, val)
-    }
-
     render() {
 
         const {comments, posts, category, sortBy, sortDirection, sortKeys, onSortChange} = this.props
