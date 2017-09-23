@@ -3,6 +3,8 @@ import PropTypes from "prop-types"
 import {formatDate} from "../util/dateutil"
 import Modal from 'react-modal'
 import {sort} from "../util/textutil"
+import SortForm from "./SortForm"
+
 const customStyles = {
     content: {
         top: '50%',
@@ -29,15 +31,15 @@ class Comments extends Component {
 
     state = {
         modalIsOpen: false,
-        selectedComment:{},
+        selectedComment: {},
         updatedComment: {}
     }
 
     openModal(comment) {
         this.setState({
             modalIsOpen: true,
-            selectedComment:comment,
-            updatedComment:comment
+            selectedComment: comment,
+            updatedComment: comment
         });
     }
 
@@ -48,10 +50,10 @@ class Comments extends Component {
 
     closeModal() {
         this.setState({
-            modalIsOpen: false,
-            selectedComment:{},
-            updatedComment:{}
-        }
+                modalIsOpen: false,
+                selectedComment: {},
+                updatedComment: {}
+            }
         );
     }
 
@@ -60,12 +62,12 @@ class Comments extends Component {
         console.log("Updating comment")
         e.preventDefault()
         this.setState({
-            ...this.state, updatedComment:{...this.state.updatedComment, [field]:e.target.value}
+            ...this.state, updatedComment: {...this.state.updatedComment, [field]: e.target.value}
         })
     }
 
     updateComment() {
-        if(this.state.selectedComment.body !== this.state.updatedComment.body) {
+        if (this.state.selectedComment.body !== this.state.updatedComment.body) {
             console.log("Updating comment to ", this.state.updatedComment)
             this.props.onUpdateComment(this.state.updatedComment)
             this.closeModal()
@@ -87,25 +89,21 @@ class Comments extends Component {
         const {sortBy, sortDirection} = this.props
         const comments = sort(origComments, sortBy, sortDirection)
 
-        console.log("Sorted Comments: ",comments )
+        console.log("Sorted Comments: ", comments)
 
         if (comments.length > 0) {
 
             return comments.map(comment => (
                 <li className="comment" key={comment.id}>
                     <div className="clearfix">
-                        <h4 className="pull-left">
+                        <h4 id={comment.id} className="pull-left">
                             {comment.author}
 
 
                         </h4>
 
-
-                        <p className="pull-right">{formatDate(comment.timestamp)}</p>
-                    </div>
-                    <div className="clearfix">
-                        <em className="sm-padding">{comment.body}</em>
-                        <span className="sm-padding pull-right">
+                        <span className="pull-right">
+                            <span className="sm-padding">
                             <a href="#edit"
                                onClick={(e) => {
                                    this.openModal(comment)
@@ -123,12 +121,56 @@ class Comments extends Component {
                                    e.preventDefault()
                                    this.removeComment(comment.id)
                                }}
-                               className="sm-padding"
+                               className="xs-padding"
                                title="Remove comment"
                             >
                             <span className="glyphicon glyphicon-remove xs-padding"/>
                             </a>
                         </span>
+
+
+                            {formatDate(comment.timestamp)}
+
+                        </span>
+
+                    </div>
+                    <div className="clearfix">
+                        <em className="sm-padding">{comment.body}</em>
+
+                        <span className="sm-padding pull-right">
+                            <span className="glyphicon glyphicon-heart xs-padding"/>
+                            {comment.voteScore}
+                        </span>
+
+                        <span className="sm-padding pull-right">
+                            <a href="#edit"
+                               onClick={(e) => {
+                                   e.preventDefault()
+                                   this.props.onLikeComment(comment.id)
+                               }
+
+                               }
+                               className="sm-padding"
+                               title="Edit comment"
+                            >
+                                <span className="glyphicon glyphicon-thumbs-up xs-padding"/>
+                            </a>
+
+                            <a href="#remove"
+                               onClick={(e) => {
+                                   e.preventDefault()
+                                   this.props.onLikeComment(comment.id)
+                               }
+
+                               }
+                               className="sm-padding"
+                               title="Remove comment"
+                            >
+                            <span className="glyphicon glyphicon-thumbs-down xs-padding"/>
+                            </a>
+                        </span>
+
+
                     </div>
                     <hr/>
                 </li>
@@ -157,7 +199,7 @@ class Comments extends Component {
     }
 
     render() {
-        const {sortBy, sortDirection} = this.props
+        const {sortBy, sortDirection, sortKeys} = this.props
         return (
 
             <div className="well">
@@ -170,29 +212,14 @@ class Comments extends Component {
                     <div className="col-md-2"/>
                     <div className="col-md-5 text-right">
 
-                        <form className="form-inline">
-                            <span htmlFor="sel1" className="xs-padding strong">SORT BY </span>
-
-                            <select value={sortBy} onChange={this.changeSortBy.bind(this)} className="form-control" id="sel1">
-                                <option value="voteScore"
-                                >Votes</option>
-                                <option
-                                    value="timestamp"
-                                >Date</option>
-                            </select>
-
-                            <select value={sortDirection} onChange={this.changeSortDirection.bind(this)} className="form-control" id="sel1">
-                                <option value="desc">DESC</option>
-                                <option value="asc">ASC</option>
-                            </select>
-
-                        </form>
-
+                        <SortForm sortKeys={sortKeys}
+                                  sortBy={sortBy}
+                                  sortDirection={sortDirection}
+                                  onSortChange={this.props.onSortChange}
+                        />
 
                     </div>
                 </div>
-
-
 
 
                 <hr/>
@@ -210,41 +237,43 @@ class Comments extends Component {
 
                     <h4>Edit Comment</h4>
                     <form className="clearfix">
-                                <div className="col-md-12 form-group">
-                                    <label className="sr-only" htmlFor="name">Name</label>
-                                    <input className="form-control"
-                                           id="name"
-                                           readOnly="true"
-                                            onChange={
-                                                e => {
-                                                 this.handleCommentChange(e, "author")
-                                                }
-                                            }
-                                           value={this.state.updatedComment.author}
-                                           placeholder="Name"/>
-                                </div>
+                        <div className="col-md-12 form-group">
+                            <label className="sr-only" htmlFor="name">Name</label>
+                            <input className="form-control"
+                                   id="name"
+                                   readOnly="true"
+                                   onChange={
+                                       e => {
+                                           this.handleCommentChange(e, "author")
+                                       }
+                                   }
+                                   value={this.state.updatedComment.author}
+                                   placeholder="Name"/>
+                        </div>
 
-                                <div className="col-md-12 form-group">
-                                    <label className="sr-only" htmlFor="comment">Comment</label>
-                                    <textarea rows="6"
-                                              className="form-control"
-                                              onChange={
-                                                e => {
-                                                 this.handleCommentChange(e, "body")
-                                                 }
-                                                }
-                                              value={this.state.updatedComment.body}
-                                              placeholder="Comment"/>
-                                </div>
-                                <div className="col-md-12 form-group text-right">
-                                    <button type="cancel"
-                                            onClick={this.closeModal}
-                                            className="btn btn-primary pull-left">Cancel</button>
-                                    <button type="submit"
-                                            onClick={this.updateComment}
-                                            className="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
+                        <div className="col-md-12 form-group">
+                            <label className="sr-only" htmlFor="comment">Comment</label>
+                            <textarea rows="6"
+                                      className="form-control"
+                                      onChange={
+                                          e => {
+                                              this.handleCommentChange(e, "body")
+                                          }
+                                      }
+                                      value={this.state.updatedComment.body}
+                                      placeholder="Comment"/>
+                        </div>
+                        <div className="col-md-12 form-group text-right">
+                            <button type="cancel"
+                                    onClick={this.closeModal}
+                                    className="btn btn-primary pull-left">Cancel
+                            </button>
+                            <button type="submit"
+                                    onClick={this.updateComment}
+                                    className="btn btn-primary">Submit
+                            </button>
+                        </div>
+                    </form>
                 </Modal>
             </div>
 
@@ -254,12 +283,14 @@ class Comments extends Component {
 
 Comments.propTypes = {
     comments: PropTypes.array.isRequired,
-    onDeleteComment:PropTypes.func.isRequired,
-    onUpdateComment:PropTypes.func.isRequired,
+    onDeleteComment: PropTypes.func.isRequired,
+    onUpdateComment: PropTypes.func.isRequired,
     sortBy: PropTypes.string,
     sortDirection: PropTypes.string,
     sortKeys: PropTypes.array,
-    onSortChange: PropTypes.func
+    onSortChange: PropTypes.func,
+    onLikeComment: PropTypes.func,
+    onDislikeComment: PropTypes.func
 };
 Comments.defaultProps = {};
 

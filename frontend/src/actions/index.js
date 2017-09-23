@@ -120,14 +120,24 @@ export const init = () => {
     }
 }
 
-export const likePost = (post_id, idDislike = false) => {
+export const likePost = (post_id, isDislike = false) => {
     return dispatch => {
         dispatch({
             type: ActionTypes.LIKE_POST,
-            payload: idDislike ? api.Posts.downvote(post_id) : api.Posts.upvote(post_id)
+            payload: isDislike ? api.Posts.downvote(post_id) : api.Posts.upvote(post_id)
         })
         dispatch(getPost(post_id))
 
+    }
+}
+
+export const likeComment = (postId, commentId, isDislike = false) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.LIKE_COMMENT,
+            payload: isDislike ? api.Comments.downvote(commentId) : api.Comments.upvote(commentId)
+        })
+        dispatch(getPost(postId))
     }
 }
 
@@ -220,6 +230,7 @@ export const ActionTypes = {
     ADD_COMMENT: 'ADD_COMMENT',
     ADD_COMMENT_AND_FETCH: 'ADD_COMMENT_AND_FETCH',
     LIKE_POST: 'LIKE_POST',
+    LIKE_COMMENT: 'LIKE_POST',
     INIT: 'INIT',
     CREATE_POST: 'CREATE_POST',
     UPDATE_POST: 'UPDATE_POST',

@@ -5,6 +5,8 @@ import 'react-select/dist/react-select.css'
 import PostSnippet from "./PostSnippet"
 import PropTypes from "prop-types"
 import {sort} from "../util/textutil"
+import SortForm from "./SortForm"
+
 
 class PostList extends Component {
 
@@ -44,7 +46,7 @@ class PostList extends Component {
 
     render() {
 
-        const {comments, posts, category, sortBy, sortDirection} = this.props
+        const {comments, posts, category, sortBy, sortDirection, sortKeys, onSortChange} = this.props
 
 
         return (
@@ -58,24 +60,11 @@ class PostList extends Component {
                     <div className="col-md-2"/>
                     <div className="col-md-5 text-right">
 
-                        <form className="form-inline">
-                            <span htmlFor="sel1" className="xs-padding strong">SORT BY </span>
-
-                            <select value={sortBy} onChange={this.changeSortBy.bind(this)} className="form-control" id="sel1">
-                                <option value="voteScore"
-                                >Votes</option>
-                                <option
-                                    value="timestamp"
-                                >Date</option>
-                            </select>
-
-                            <select value={sortDirection} onChange={this.changeSortDirection.bind(this)} className="form-control" id="sel1">
-                                <option value="desc">DESC</option>
-                                <option value="asc">ASC</option>
-                            </select>
-
-                        </form>
-
+                        <SortForm sortKeys={sortKeys}
+                                  sortBy={sortBy}
+                                  sortDirection={sortDirection}
+                                  onSortChange={onSortChange}
+                        />
 
                     </div>
                 </div>

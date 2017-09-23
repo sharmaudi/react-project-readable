@@ -116,7 +116,7 @@ const ui = (state = {
     post_sort_direction: 'desc',
     comment_sort_by: 'voteScore',
     comment_sort_direction: 'desc',
-    sort_by_keys:['voteScore','timestamp']
+    sort_by_keys:[{key:'voteScore',value:'Vote Score'},{key:'timestamp',value:'Date'}]
 }, action) => {
 
     if(action.type === ActionTypes.CHANGE_SORT_PARAMS) {

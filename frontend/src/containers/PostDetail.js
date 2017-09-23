@@ -1,7 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {addComment, getComments, getPost, likePost, deletePost, updateComment, deleteComment, changeSortParams} from "../actions/index"
+import {addComment,
+    getComments,
+    getPost,
+    likePost,
+    deletePost,
+    updateComment,
+    deleteComment,
+    likeComment,
+    changeSortParams} from "../actions/index"
 import SinglePost from "../components/SinglePost"
 import CommentForm from "../components/CommentForm"
 import Comments from "../components/Comments"
@@ -53,6 +61,16 @@ class PostDetail extends Component {
         this.props.likePost(postId, true)
     }
 
+     likeComment(commentId) {
+        const postId = this.props.match.params.postId
+        this.props.likeComment(postId,commentId)
+    }
+
+    dislikeComment(commentId) {
+        const postId = this.props.match.params.postId
+        this.props.likeComment(postId, commentId, true)
+    }
+
     deletePost(postId) {
 
         this.props.deletePost(postId)
@@ -99,8 +117,11 @@ class PostDetail extends Component {
                                 <Comments comments={comments}
                                           onDeleteComment={this.deleteComment.bind(this)}
                                           onUpdateComment={this.updateComment.bind(this)}
+                                          sortKeys={sort_by_keys}
                                           sortBy={comment_sort_by}
                                           sortDirection={comment_sort_direction}
+                                          onLikeComment={this.likeComment.bind(this)}
+                                          onDislikeComment={this.dislikeComment.bind(this)}
                                           onSortChange={this.changeSortMethod.bind(this)}
                                 />
                                 <hr/>
@@ -139,5 +160,13 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPost, getComments, addComment, likePost, deletePost, updateComment, deleteComment, changeSortParams
+    getPost,
+    getComments,
+    addComment,
+    likePost,
+    deletePost,
+    updateComment,
+    deleteComment,
+    likeComment,
+    changeSortParams
 })(PostDetail))
