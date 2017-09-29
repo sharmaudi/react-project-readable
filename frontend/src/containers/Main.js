@@ -80,11 +80,11 @@ class Main extends Component {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({blog, connection, ui}) => {
     return {
-        blog: state.blog,
-        connection: state.connection,
-        ui:state.ui
+        blog,
+        connection,
+        ui
     }
 }
 

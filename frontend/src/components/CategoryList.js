@@ -11,12 +11,10 @@ class CategoryList extends Component {
     renderCategories() {
         const {categories, selectedCategory} = this.props
 
+
         if (categories) {
             const catArray = _.values(categories)
             return catArray.map(category => {
-
-                console.log(`Selected category is ${selectedCategory}`)
-
                 if (category.name === selectedCategory) {
                     return (
                         <Link to={"/category/" + category.path}
@@ -58,8 +56,5 @@ class CategoryList extends Component {
         );
     }
 }
-
-CategoryList.propTypes = {};
-CategoryList.defaultProps = {};
 
 export default CategoryList;

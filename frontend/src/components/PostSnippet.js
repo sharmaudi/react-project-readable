@@ -90,6 +90,5 @@ PostSnippet.propTypes = {
     onLikePost: PropTypes.func,
     onDislikePost: PropTypes.func
 }
-PostSnippet.defaultProps = {}
 
 export default PostSnippet

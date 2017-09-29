@@ -1,6 +1,6 @@
 import api from "../util/Api"
 import _ from 'lodash'
-
+import ActionTypes from './types'
 
 export const getPostsForCategory = (category) => ({
     type: ActionTypes.GET_POSTS_FOR_CATEGORY,
@@ -232,21 +232,3 @@ export const changeSortParams = (entity, sortBy, sortDirection) => {
     }
 }
 
-export const ActionTypes = {
-    GET_POSTS: 'GET_POSTS',
-    GET_CATEGORIES: 'GET_CATEGORIES',
-    GET_POSTS_FOR_CATEGORY: 'GET_POSTS_FOR_CATEGORY',
-    GET_POST: 'GET_POST',
-    GET_COMMENTS: 'GET_COMMENTS',
-    ADD_COMMENT: 'ADD_COMMENT',
-    ADD_COMMENT_AND_FETCH: 'ADD_COMMENT_AND_FETCH',
-    LIKE_POST: 'LIKE_POST',
-    LIKE_COMMENT: 'LIKE_POST',
-    INIT: 'INIT',
-    CREATE_POST: 'CREATE_POST',
-    UPDATE_POST: 'UPDATE_POST',
-    DELETE_POST: 'DELETE_POST',
-    EDIT_COMMENT: 'EDIT_COMMENT',
-    DELETE_COMMENT: 'DELETE_COMMENT',
-    CHANGE_SORT_PARAMS: 'CHANGE_SORT_PARAMS'
-}

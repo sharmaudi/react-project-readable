@@ -58,15 +58,13 @@ class AddOrUpdatePost extends Component {
     }
 }
 
-AddOrUpdatePost.propTypes = {};
-AddOrUpdatePost.defaultProps = {};
 
-
-const mapStateToProps = (state) => {
+const mapStateToProps = ({blog, connection}) => {
+    const {posts, categories} = blog
     return {
-        posts: state.blog.posts,
-        connection: state.connection,
-        categories: _.values(state.blog.categories)
+        posts,
+        connection,
+        categories: _.values(categories)
     }
 }
 

@@ -132,6 +132,5 @@ EditPostForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     operation: PropTypes.string
 };
-EditPostForm.defaultProps = {};
 
 export default EditPostForm;

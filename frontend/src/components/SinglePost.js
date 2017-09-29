@@ -135,6 +135,5 @@ SinglePost.propTypes = {
     onEditPost:PropTypes.func,
     onDeletePost:PropTypes.func
 };
-SinglePost.defaultProps = {};
 
 export default SinglePost;

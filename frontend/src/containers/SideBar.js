@@ -50,19 +50,16 @@ class SideBar extends Component {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({blog, connection}) => {
+    const {categories, selected_category, posts, comments} = blog
     return {
-        categories: state.blog.categories,
-        selectedCategory: state.blog.selected_category,
-        connection: state.connection,
-        posts: state.blog.posts,
-        comments: state.blog.comments
+        categories,
+        selectedCategory:selected_category,
+        connection,
+        posts,
+        comments
     }
 }
-
-
-SideBar.propTypes = {};
-SideBar.defaultProps = {};
 
 
 export default withRouter(connect(mapStateToProps, {

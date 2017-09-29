@@ -81,7 +81,6 @@ PostList.propTypes = {
     onLikePost: PropTypes.func,
     onDislikePost: PropTypes.func
 };
-PostList.defaultProps = {};
 
 export default PostList;
 

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 
 class ErrorPage extends Component {
     render() {
@@ -9,7 +8,5 @@ class ErrorPage extends Component {
     }
 }
 
-ErrorPage.propTypes = {};
-ErrorPage.defaultProps = {};
 
 export default ErrorPage;

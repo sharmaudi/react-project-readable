@@ -142,20 +142,13 @@ class PostDetail extends Component {
     }
 }
 
-PostDetail.propTypes = {};
-PostDetail.defaultProps = {};
-
-
-PostDetail.propTypes = {};
-PostDetail.defaultProps = {};
-
-const mapStateToProps = (state, ownProps) => {
-    console.log("MapStateToProps")
+const mapStateToProps = ({blog, connection, ui}) => {
+    const {posts, comments} = blog
     return {
-        posts: state.blog.posts,
-        comments: state.blog.comments,
-        connection: state.connection,
-        ui:state.ui
+        posts,
+        comments,
+        connection,
+        ui
     }
 }
 

@@ -47,6 +47,5 @@ SortForm.propTypes = {
     onSortChange: PropTypes.func
 
 };
-SortForm.defaultProps = {};
 
 export default SortForm;

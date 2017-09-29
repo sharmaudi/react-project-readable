@@ -282,6 +282,5 @@ Comments.propTypes = {
     onLikeComment: PropTypes.func,
     onDislikeComment: PropTypes.func
 };
-Comments.defaultProps = {};
 
 export default Comments;

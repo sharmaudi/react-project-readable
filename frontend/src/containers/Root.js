@@ -80,11 +80,12 @@ Root.propTypes = {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({blog, connection}) => {
+    const {posts, comments} = blog
     return {
-        posts: state.blog.posts,
-        comments: state.blog.comments,
-        connection: state.connection
+        posts,
+        comments,
+        connection
     }
 }
 

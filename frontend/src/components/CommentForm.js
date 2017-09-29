@@ -66,7 +66,4 @@ class CommentForm extends Component {
     }
 }
 
-CommentForm.propTypes = {};
-CommentForm.defaultProps = {};
-
 export default CommentForm;
