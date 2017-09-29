@@ -11,7 +11,7 @@ import SortForm from "./SortForm"
 class PostList extends Component {
 
     renderPosts(origPosts, comments) {
-        const {sortBy, sortDirection} = this.props
+        const {sortBy, sortDirection, onLikePost, onDislikePost} = this.props
 
         const posts = sort(_.values(origPosts), sortBy, sortDirection)
 
@@ -25,7 +25,13 @@ class PostList extends Component {
                 }
 
                 return (
-                    <PostSnippet key={post.id} post={post} commentCount={commentCount}/>
+                    <PostSnippet key={post.id}
+                                 post={post}
+                                 commentCount={commentCount}
+                                 onLikePost = {onLikePost}
+                                 onDislikePost = {onDislikePost}
+
+                    />
 
                 )
             })
@@ -71,7 +77,9 @@ PostList.propTypes = {
     sortBy: PropTypes.string,
     sortDirection: PropTypes.string,
     sortKeys: PropTypes.array,
-    onSortChange: PropTypes.func
+    onSortChange: PropTypes.func,
+    onLikePost: PropTypes.func,
+    onDislikePost: PropTypes.func
 };
 PostList.defaultProps = {};
 

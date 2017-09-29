@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getPosts, getPostsForCategory, init, changeSortParams} from "../actions"
+import {getPosts, getPostsForCategory, init, changeSortParams, likePost} from "../actions"
 import Spinner from "react-spinkit"
 import {withRouter} from 'react-router-dom'
 import PostList from "../components/PostList"
@@ -45,6 +45,15 @@ class Main extends Component {
 
     }
 
+    likePost(postId) {
+        this.props.likePost(postId)
+    }
+
+    dislikePost(postId) {
+        this.props.likePost(postId, true)
+    }
+
+
 
     render() {
         const {posts, comments} = this.props.blog
@@ -62,6 +71,8 @@ class Main extends Component {
                           sortDirection={post_sort_direction}
                           sortKeys={sort_by_keys}
                           onSortChange={this.changeSortMethod.bind(this)}
+                          onLikePost={this.likePost.bind(this)}
+                          onDislikePost={this.dislikePost.bind(this)}
                 />
             </div>
         );
@@ -79,5 +90,5 @@ const mapStateToProps = (state) => {
 
 
 export default withRouter(connect(mapStateToProps, {
-    getPosts, getPostsForCategory, init, changeSortParams
+    getPosts, getPostsForCategory, init, changeSortParams, likePost
 })(Main))

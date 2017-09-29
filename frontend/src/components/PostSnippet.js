@@ -47,10 +47,36 @@ class PostSnippet extends Component {
             <ReactMarkdown source={body}/>
 
 
-            <p className="text-right">
-                <Link
+            <div className="row">
+                <div className="col-md-4">
+                    <Link
                     to={`/post/${props.post.id}`}>continue reading...</Link>
-            </p>
+                </div>
+
+                <div className="col-md-4"/>
+                <div className="col-md-4 text-right">
+                    <a href="#11" title="Like Post" className="sm-padding" onClick={
+                            (e) => {
+                                e.preventDefault()
+                                props.onLikePost(props.post.id)
+                            }
+                        }>
+                            <span className="glyphicon glyphicon-thumbs-up font-large"/>
+                        </a>
+                        <a href="#11" title="Dislike Post" className="sm-padding" onClick={
+                            (e) => {
+                                e.preventDefault()
+                                props.onDislikePost(props.post.id)
+                            }
+                        }>
+                            <span className="glyphicon glyphicon-thumbs-down font-large"/>
+                        </a>
+                </div>
+            </div>
+
+
+
+
 
 
         </article>
@@ -60,7 +86,9 @@ class PostSnippet extends Component {
 
 PostSnippet.propTypes = {
     post: PropTypes.object.isRequired,
-    commentCount: PropTypes.number.isRequired
+    commentCount: PropTypes.number.isRequired,
+    onLikePost: PropTypes.func,
+    onDislikePost: PropTypes.func
 }
 PostSnippet.defaultProps = {}
 
