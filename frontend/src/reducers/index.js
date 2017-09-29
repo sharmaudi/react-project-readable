@@ -89,6 +89,7 @@ const posts = (state = initialState, action) => {
 }
 
 const connectionProps = (state = {
+    init_pending: false,
     pending: false,
     error: false,
     error_message: null
@@ -96,17 +97,30 @@ const connectionProps = (state = {
     const {type} = action
 
 
-    if (api_success(type)) {
-        return {...state, pending: false, error: false, error_message: null}
+
+    if (action.type === 'GET_POSTS_PENDING') {
+        return {...state, init_pending:true}
+    }
+
+    if (action.type === 'GET_POSTS_FULFILLED') {
+        return {...state, init_pending:false}
+    }
+
+    if (api_pending(type)) {
+        return {...state, pending: true, error: false, error_message: null}
     }
 
     if (api_failure(type)) {
         return {...state, pending: false, error: true, error_message: action.error}
     }
 
-    if (api_pending(type)) {
-        return {...state, pending: true, error: false, error_message: null}
+    if (api_success(type)) {
+        return {...state, pending: false, error: false, error_message: null}
     }
+
+
+
+
 
     return state
 }

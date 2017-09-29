@@ -1,4 +1,5 @@
 import api from "../util/Api"
+import _ from 'lodash'
 
 
 export const getPostsForCategory = (category) => ({
@@ -86,9 +87,16 @@ export const getPost = (id) => {
     return dispatch => {
         dispatchPending(dispatch, ActionTypes.GET_POST)
         api.Posts.get_post_by_id(id).then(({data: post}) => {
-            handleGetPost(dispatch, post).then(post => {
-                dispatchFulfilled(dispatch, ActionTypes.GET_POST, {data: post})
-            }).catch(err => dispatchRejected(dispatch, ActionTypes.GET_POST, err))
+
+            if (_.isEmpty(post)) {
+                dispatchRejected(dispatch, ActionTypes.GET_POST, {error: 'not found', code: 404})
+            } else {
+                handleGetPost(dispatch, post).then(post => {
+                    dispatchFulfilled(dispatch, ActionTypes.GET_POST, {data: post})
+                }).catch(err => dispatchRejected(dispatch, ActionTypes.GET_POST, err))
+            }
+
+
         }).catch(err => {
                 dispatchRejected(dispatch, ActionTypes.GET_POST, err)
             }
@@ -117,6 +125,9 @@ export const init = () => {
         })
         dispatch(getPosts())
         dispatch(getCategories())
+         dispatch({
+            type: "INIT_FULFILLED"
+        })
     }
 }
 
@@ -180,7 +191,7 @@ export const addComment = ( (post_id, comment) => {
             type: ActionTypes.ADD_COMMENT,
             payload: api.Posts.add_comment_to_post(post_id, comment)
         })
-        dispatch(getPosts())
+        dispatch(getPost(post_id))
     }
 })
 
@@ -193,7 +204,7 @@ export const updateComment = ( (post_id, comment) => {
         })
 
         //reconcile post and comments
-        dispatch(getPosts())
+        dispatch(getPost(post_id))
     }
 })
 
